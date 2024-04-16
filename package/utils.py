@@ -1,9 +1,4 @@
-"""
-Some useful functions, namely for Webots and for working with the epuck robot (https://cyberbotics.com/doc/guide/epuck?version=R2021a).
-By: Gonçalo Leão
-"""
 import math
-
 from controller import Robot, Motor, Supervisor, Node
 from controller.device import Device
 
