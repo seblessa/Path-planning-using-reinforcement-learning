@@ -1,6 +1,7 @@
 import gymnasium
 from gymnasium import spaces
 import math
+import time
 import numpy as np
 from controller import Robot, Lidar, GPS, Supervisor
 from package import cmd_vel, move_forward, rotate
@@ -11,6 +12,7 @@ ROTATE_LEFT = 1
 ROTATE_RIGHT = 2
 
 # TODO: Improve the reward function
+
 
 class Environment(gymnasium.Env):
     def __init__(self):
@@ -24,12 +26,16 @@ class Environment(gymnasium.Env):
 
         self.timestep: int = int(self.robot.getBasicTimeStep())
 
+        self.battery = self.robot.batterySensorEnable(self.timestep)
+
         self.lidar: Lidar = self.robot.getDevice("lidar")
         self.lidar.enable(self.timestep)
         self.lidar.enablePointCloud()
 
         self.gps = self.robot.getDevice('gps')
         self.gps.enable(self.timestep)
+
+        self.time_start = 0
 
         self.initial_position = (0, 0)
         self.goal_position = (1.50, 1.70)
@@ -40,22 +46,22 @@ class Environment(gymnasium.Env):
 
         self.num_timesteps = 0
         self.max_timesteps = 5000
-        self.last_action = 0
+        self.last_action = -1
 
     def step(self, action):
+        if self.last_action == -1:
+            self.time_start = time.time()
 
         if action == 0:
             cmd_vel(self.robot, 0.1, 0)
             self.robot.step(self.timestep)
         elif action == 1:
-            cmd_vel(self.robot, 0, 0.1)
+            cmd_vel(self.robot, 0.1, 0.1)
             self.robot.step(self.timestep)
         elif action == 2:
-            cmd_vel(self.robot, 0, -0.1)
+            cmd_vel(self.robot, 0.1, -0.1)
             self.robot.step(self.timestep)
-        # elif action == 3:
-        #   cmd_vel(self.robot, -0.1, 0)
-        #    self.robot.step(self.timestep)
+
         self.last_action = action
 
         self.num_timesteps += 1
@@ -64,7 +70,7 @@ class Environment(gymnasium.Env):
         lidar_data = self.get_obs()
 
         reward, terminated = self.calculate_reward(actual_location, lidar_data)
-        return np.array(lidar_data, dtype=np.float32), reward, terminated, self.reached_goal(actual_location), {"gps_readings": actual_location}
+        return np.array(lidar_data, dtype=np.float32), reward, terminated, self.reached_goal(actual_location), {"gps_readings": actual_location, "battery": self.robot.batterySensorGetValue(), "time": time.time()-self.time_start}
 
     def get_obs(self):
         lidar_data = self.lidar.getRangeImage()
@@ -86,7 +92,7 @@ class Environment(gymnasium.Env):
         else:
             cont = 0
             reward = 4 - self.calculate_distance(gps_readings)
-            reward += self.calculate_direction_reward(gps_readings)
+            # reward += self.calculate_direction_reward(gps_readings)
             for i in range(len(lidar_data)):
                 if lidar_data[i] < self.min_safe_distance:
                     cont += 1
@@ -108,8 +114,9 @@ class Environment(gymnasium.Env):
             if self.goal_position[1] < gps_readings[1]:
                 return 1
             return 0
-        elif self.goal_position[0] > gps_readings[0]:
-            return 1
+        elif self.last_action == 0:
+            if self.goal_position[0] > gps_readings[0]:
+                return 1
         return 0
 
     def reached_goal(self, actual_location):
@@ -128,7 +135,7 @@ class Environment(gymnasium.Env):
         self.robot.simulationReset()
         cmd_vel(self.robot, 0, 0)
         self.num_timesteps = 0
-        self.last_action = 0
+        self.last_action = -1
         obs = self.get_obs()
         for i in range(len(obs)):
             if math.isinf(obs[i]):
