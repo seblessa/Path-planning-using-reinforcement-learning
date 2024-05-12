@@ -1,2 +1,2 @@
 from .utils import *
-from .test import run
+from .test_model import run
