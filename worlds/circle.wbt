@@ -12,15 +12,16 @@ WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation 0.5038868637953889 -0.5026845235734467 -0.7024288563649588 4.364054653095659
-  position 0.922254867116954 -0.5017393292723833 3.830850717457691
+  orientation 0.38423263151516207 -0.3837952471235471 -0.8396823763568634 4.537418095589193
+  position 1.0141359166925712 -1.4128027287412714 2.774301416754906
 }
 TexturedBackground {
 }
 TexturedBackgroundLight {
 }
 DEF robot Robot {
-  translation 0.38 0.34 0
+  translation 0.38 0.34 -3.19834e-05
+  rotation 0 0 0.9999999999999999 0
   children [
     TouchSensor {
       translation 0 0 0.04
@@ -46,6 +47,7 @@ DEF robot Robot {
     }
     HingeJoint {
       jointParameters HingeJointParameters {
+        position 119.35240327123407
         axis 0 1 0
         anchor 0 0 0.02
       }
@@ -61,8 +63,8 @@ DEF robot Robot {
         }
       ]
       endPoint DEF EPUCK_LEFT_WHEEL Solid {
-        translation 0 0.026 0.02
-        rotation 0 1 0 0
+        translation 0 0.025999999999999995 0.02
+        rotation 0 1 0 6.255067742001505
         children [
           DEF EPUCK_WHEEL Pose {
             rotation 1 0 0 -1.570796
@@ -198,6 +200,7 @@ DEF robot Robot {
     }
     HingeJoint {
       jointParameters HingeJointParameters {
+        position 123.56786294345844
         axis 0 1 0
         anchor 0 0 0.02
       }
@@ -213,8 +216,8 @@ DEF robot Robot {
         }
       ]
       endPoint DEF EPUCK_RIGHT_WHEEL Solid {
-        translation 0 -0.026 0.02
-        rotation 0 1 0 0
+        translation 0 -0.026000000000000006 0.02
+        rotation 0 -1 0 2.095843200133293
         children [
           Pose {
             rotation 1 0 0 3.14159
@@ -19896,4 +19899,30 @@ Solid {
     }
   ]
   name "solid1707"
+}
+Solid {
+  translation 1.5 1.7 -0.049
+  children [
+    Shape {
+      geometry Box {
+        size 0.1 0.1 0.1
+      }
+      castShadows FALSE
+      isPickable FALSE
+    }
+  ]
+  name "goal"
+}
+Solid {
+  translation 0.38 0.34 -0.049
+  children [
+    Shape {
+      geometry Box {
+        size 0.1 0.1 0.1
+      }
+      castShadows FALSE
+      isPickable FALSE
+    }
+  ]
+  name "start"
 }
