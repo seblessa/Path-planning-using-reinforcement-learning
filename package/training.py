@@ -1,4 +1,4 @@
-from stable_baselines3 import PPO, SAC, DDPG, DQN
+from stable_baselines3 import PPO, DQN, A2C
 from .environment import Environment
 from .utils import latest_model
 import os
@@ -40,12 +40,9 @@ def main(algo_name=None):
     if algo_name == "PPO":
         print("Training PPO")
         train_model(PPO, algo_name, policy)
-    elif algo_name == "SAC":
-        print("Training SAC")
-        train_model(SAC, algo_name, policy)
-    elif algo_name == "DDPG":
-        print("Training DDPG")
-        train_model(DDPG, algo_name, policy)
+    elif algo_name == "A2C":
+        print("Training A2C")
+        train_model(A2C, algo_name, policy)
     elif algo_name == "DQN":
         print("Training DQN")
         train_model(DQN, algo_name, policy)
