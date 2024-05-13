@@ -5,7 +5,7 @@ from .environment import Environment
 from .utils import latest_model
 
 
-def test_model(algorithm, algo_name):
+def test_model1(algorithm, algo_name):
     env = Environment()
     model_path = latest_model(algo_name)
     print(f"Testing: {model_path}")
@@ -15,7 +15,7 @@ def test_model(algorithm, algo_name):
     print(f"mean_reward: {mean_reward:.2f} +/- {std_reward:.2f}")
 
 
-def test_model1(algorithm, algo_name):
+def test_model(algorithm, algo_name):
     env = Environment()
     model_path = latest_model(algo_name)
     model = algorithm.load(model_path, env=env)
