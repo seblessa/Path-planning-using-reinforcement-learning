@@ -4,3 +4,4 @@ tensorboard
 gymnasium
 tqdm
 rich
+numpy

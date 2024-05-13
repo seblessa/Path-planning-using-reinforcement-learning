@@ -11,17 +11,12 @@ ROTATE_LEFT = 1
 ROTATE_RIGHT = 2
 
 
-# TODO: Improve the reward function
-
-
 class Environment(gymnasium.Env):
     def __init__(self):
         self.observation_space = spaces.Box(low=0, high=math.inf, shape=(100,), dtype=np.float32)
         self.action_space = spaces.Discrete(3)
 
         self.robot: Supervisor = Supervisor()
-        #self.robot.simulationSetMode(0)
-
         self.robot_node = self.robot.getFromDef("robot")
 
         self.translation_node = self.robot_node.getField("translation")
@@ -38,6 +33,9 @@ class Environment(gymnasium.Env):
         self.gps.enable(self.timestep)
 
         self.time_start = 0
+
+        self.last_position = self.gps_info()
+        self.last_distance = None
 
         self.initial_position = (0, 0)
         self.goal_position = (1.50, 1.70)
@@ -58,10 +56,10 @@ class Environment(gymnasium.Env):
             cmd_vel(self.robot, 0.1, 0)
             self.robot.step(self.timestep)
         elif action == 1:
-            cmd_vel(self.robot, 0.1, 0.5)
+            cmd_vel(self.robot, 0.1, 0.1)
             self.robot.step(self.timestep)
         elif action == 2:
-            cmd_vel(self.robot, 0.1, -0.5)
+            cmd_vel(self.robot, 0.1, -0.1)
             self.robot.step(self.timestep)
 
         self.last_action = action
@@ -72,7 +70,10 @@ class Environment(gymnasium.Env):
         lidar_data = self.get_obs()
 
         reward, terminated = self.calculate_reward(actual_location, lidar_data)
-        return np.array(lidar_data, dtype=np.float32), reward, terminated, self.reached_goal(actual_location), {"gps_readings": actual_location, "battery": self.robot.batterySensorGetValue(), "time": time.time()-self.time_start}
+        self.last_position = actual_location
+        return np.array(lidar_data, dtype=np.float32), reward, terminated, self.reached_goal(actual_location), {
+            "gps_readings": actual_location, "battery": self.robot.batterySensorGetValue(),
+            "time": time.time() - self.time_start}
 
     def get_obs(self):
         lidar_data = self.lidar.getRangeImage()
@@ -94,7 +95,7 @@ class Environment(gymnasium.Env):
         else:
             cont = 0
             reward = 4 - self.calculate_distance(gps_readings)
-            # reward += self.calculate_direction_reward(gps_readings)
+            reward += self.calculate_direction_reward(gps_readings)
             for i in range(len(lidar_data)):
                 if lidar_data[i] < self.min_safe_distance:
                     cont += 1
@@ -110,18 +111,37 @@ class Environment(gymnasium.Env):
             2)
 
     def calculate_direction_reward(self, gps_readings):
-        if self.last_action == 1:
-            if self.goal_position[1] > gps_readings[1]:
-                return 1
+        new_closest_point, new_distance = self.point_on_line_closest_to_goal(line_point1=last_position,
+                                                                             line_point2=gps_readings,
+                                                                             given_point=self.goal_position)
+        if self.last_distance is None:
+            last_closest_point, last_distance = self.point_on_line_closest_to_goal(given_point=self.goal_position, m=1,
+                                                                                   b=0)
+            self.last_distance = last_distance
+        if new_distance < self.last_distance:
+            return 1
+        else:
             return 0
-        elif self.last_action == 2:
-            if self.goal_position[1] < gps_readings[1]:
-                return 1
-            return 0
-        elif self.last_action == 0:
-            if self.goal_position[0] > gps_readings[0]:
-                return 1
-        return 0
+
+    def point_on_line_closest_to_goal(self, line_point1=None, line_point2=None, given_point=None, m=None, b=None):
+
+        # Calculate the equation of the line (y = mx + b)
+        if m is None:
+            m = (line_point2[1] - line_point1[1]) / (line_point2[0] - line_point1[0])
+
+        if b is None:
+            b = line_point1[1] - m * line_point1[0]
+
+        # Calculate the perpendicular distance from the given point to the line
+        distance = np.abs(m * given_point[0] - given_point[1] + b) / np.sqrt(m ** 2 + 1)
+
+        # Calculate the x-coordinate of the point on the line closest to the given point
+        x_closest = (given_point[0] + m * given_point[1] - m * b) / (m ** 2 + 1)
+
+        # Calculate the y-coordinate of the point on the line closest to the given point
+        y_closest = m * x_closest + b
+
+        return (x_closest, y_closest), distance
 
     def reached_goal(self, actual_location):
         if abs(actual_location[0] - self.goal_position[0]) < self.goal_distance and abs(
@@ -141,8 +161,6 @@ class Environment(gymnasium.Env):
         cmd_vel(self.robot, 0, 0)
         self.num_timesteps = 0
         self.last_action = -1
-        self.robot.batterySensorDisable()
-        self.robot.batterySensorEnable(self.timestep)
         obs = self.get_obs()
         for i in range(len(obs)):
             if math.isinf(obs[i]):
