@@ -1,10 +1,19 @@
 from .metrics import success_rate, time_to_reach_goal, distance_to_goal, energy_consumption
+from stable_baselines3.common.evaluation import evaluate_policy
 from stable_baselines3 import PPO, SAC, DDPG, DQN
 from .environment import Environment
 from .utils import latest_model
 
-
 def test_model(algorithm, algo_name):
+    env = Environment()
+    model_path = latest_model(algo_name)
+    model = algorithm.load(model_path, env=env)
+
+    mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=10, warn=False)
+    print(f"mean_reward: {mean_reward:.2f} +/- {std_reward:.2f}")
+
+
+def test_model1(algorithm, algo_name):
     env = Environment()
     model_path = latest_model(algo_name)
     model = algorithm.load(model_path, env=env)
