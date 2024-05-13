@@ -1,6 +1,6 @@
 from .metrics import success_rate, time_to_reach_goal, distance_to_goal, energy_consumption
-from environment import Environment
-from utils import latest_model
+from .environment import Environment
+from .utils import latest_model
 import sys
 
 

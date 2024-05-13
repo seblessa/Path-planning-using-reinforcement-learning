@@ -1,6 +1,6 @@
 from stable_baselines3 import PPO, SAC, DDPG, DQN
-from environment import Environment
-from utils import latest_model
+from .environment import Environment
+from .utils import latest_model
 import os
 
 TIMESTEPS = 10 ** 4
@@ -37,27 +37,18 @@ def train_model(algo, algo_name, policy):
 
 
 def main(algo_name=None):
-    try:
-        if algo_name is None:
-            raise ValueError("No algorithm given. Please specify which model to train.")
-
-        if not os.path.exists(logdir):
-            os.makedirs(logdir)
-
-        if algo_name == "PPO":
-            train_model(PPO, algo_name, policy)
-        elif algo_name == "SAC":
-            train_model(SAC, algo_name, policy)
-        elif algo_name == "DDPG":
-            train_model(DDPG, algo_name, policy)
-        elif algo_name == "DQN":
-            train_model(DQN, algo_name, policy)
-
-        else:
-            raise ValueError("Invalid argument. Please specify a valid algorithm.")
-
-    except ValueError as e:
-        print(f"Error: {e}")
+    if algo_name == "PPO":
+        print("Training PPO")
+        train_model(PPO, algo_name, policy)
+    elif algo_name == "SAC":
+        print("Training SAC")
+        train_model(SAC, algo_name, policy)
+    elif algo_name == "DDPG":
+        print("Training DDPG")
+        train_model(DDPG, algo_name, policy)
+    elif algo_name == "DQN":
+        print("Training DQN")
+        train_model(DQN, algo_name, policy)
 
 
 if __name__ == '__main__':
