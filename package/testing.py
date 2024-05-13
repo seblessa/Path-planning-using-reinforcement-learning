@@ -1,7 +1,7 @@
-from .metrics import print_metrics
-from stable_baselines3.common.evaluation import evaluate_policy
 from stable_baselines3 import PPO, A2C, DQN
+from sb3_contrib import ARS, TRPO, QRDQN
 from .environment import Environment
+from .metrics import print_metrics
 from .utils import latest_model
 
 
@@ -40,6 +40,7 @@ def test_model(algorithm, algo_name):
 
     print_metrics(metrics_info)
 
+
 def main(algo_name=None):
     if algo_name == "PPO":
         print("Testing PPO")
@@ -50,3 +51,12 @@ def main(algo_name=None):
     elif algo_name == "DQN":
         print("Testing DQN")
         test_model(DQN, algo_name)
+    elif algo_name == "QRDQN":
+        print("Testing QRDQN")
+        test_model(QRDQN, algo_name)
+    elif algo_name == "ARS":
+        print("Testing ARS")
+        test_model(ARS, algo_name)
+    elif algo_name == "TRPO":
+        print("Testing TRPO")
+        test_model(TRPO, algo_name)

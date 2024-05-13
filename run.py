@@ -1,6 +1,30 @@
-# from package import
-
 from package import testing, training
+
+
+def choose_model():
+    print("Please select an algorithm to train:")
+    print("1. PPO")
+    print("2. A2C")
+    print("3. DQN")
+    print("4. QRDQN")
+    print("5. ARS")
+    print("6. TRPO")
+
+    choice = input("Enter the algorithm name: ")
+    if choice == "1":
+        return "PPO"
+    elif choice == "2":
+        return "A2C"
+    elif choice == "3":
+        return "DQN"
+    elif choice == "4":
+        return "QRDQN"
+    elif choice == "5":
+        return "ARS"
+    elif choice == "6":
+        return "TRPO"
+    else:
+        raise ValueError("No model selected.")
 
 
 if __name__ == '__main__':
@@ -11,34 +35,7 @@ if __name__ == '__main__':
     option = input("Enter your choice: ")
 
     if option == "1":
-        # PPO, A2C, DQN
-        print("Please select an algorithm to train:")
-        print("1. PPO")
-        print("2. A2C")
-        print("3. DQN")
-
-        choice = input("Enter the algorithm name: ")
-        if choice == "1":
-            training("PPO")
-        elif choice == "2":
-            training("A2C")
-        elif choice == "3":
-            training("DQN")
-        else:
-            print("No model selected.")
+        training(choose_model())
 
     else:  # option == "2"
-        print("Please select an algorithm to test:")
-        print("1. PPO")
-        print("2. A2C")
-        print("3. DQN")
-
-        choice = input("Enter the algorithm name: ")
-        if choice == "1":
-            testing("PPO")
-        elif choice == "2":
-            testing("A2C")
-        elif choice == "3":
-            testing("DQN")
-        else:
-            print("No model selected.")
+        testing(choose_model())

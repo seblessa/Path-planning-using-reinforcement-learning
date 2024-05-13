@@ -1,4 +1,5 @@
 from stable_baselines3 import PPO, DQN, A2C
+from sb3_contrib import ARS, TRPO, QRDQN
 from .environment import Environment
 from .utils import latest_model
 import os
@@ -18,22 +19,23 @@ def train_model(algo, algo_name, policy):
             model_path = latest_model(algo_name)
             model = algo.load(model_path, env=env)
             iters = int(int(model_path.split("/")[2].split(".")[0]) / TIMESTEPS)
+            print(f"Loaded model with {iters} iterations")
         else:
             model = algo(policy, env, verbose=1,
                          tensorboard_log=logdir)
             iters = 0
+            print("Creating new model with no iterations")
     else:
         os.makedirs(f"{models_dir}/{algo_name}")
         model = algo(policy, env, verbose=1,
                      tensorboard_log=logdir)
         iters = 0
+        print("Creating new model with no iterations")
 
     while True:
         iters += 1
         model.learn(total_timesteps=TIMESTEPS, reset_num_timesteps=False, tb_log_name=algo_name)
         model.save(f"{models_dir}/{algo_name}/{TIMESTEPS * iters}")
-        if iters * TIMESTEPS >= 60 * 10 ** 6:
-            break
 
 
 def main(algo_name=None):
@@ -46,6 +48,15 @@ def main(algo_name=None):
     elif algo_name == "DQN":
         print("Training DQN")
         train_model(DQN, algo_name, policy)
+    elif algo_name == "QRDQN":
+        print("Training QRDQN")
+        train_model(QRDQN, algo_name, policy)
+    elif algo_name == "ARS":
+        print("Training ARS")
+        train_model(ARS, algo_name, policy)
+    elif algo_name == "TRPO":
+        print("Training TRPO")
+        train_model(TRPO, algo_name, policy)
 
 
 if __name__ == '__main__':
