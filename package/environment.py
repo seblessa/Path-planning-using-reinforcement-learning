@@ -111,7 +111,7 @@ class Environment(gymnasium.Env):
             2)
 
     def calculate_direction_reward(self, gps_readings):
-        new_closest_point, new_distance = self.point_on_line_closest_to_goal(line_point1=last_position,
+        new_closest_point, new_distance = self.point_on_line_closest_to_goal(line_point1=self.last_position,
                                                                              line_point2=gps_readings,
                                                                              given_point=self.goal_position)
         if self.last_distance is None:

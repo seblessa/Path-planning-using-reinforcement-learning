@@ -1,3 +1,4 @@
 *.wbproj
 .vscode/*
 .idea/*
+logs
