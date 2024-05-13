@@ -3,7 +3,14 @@ from controller import Robot, Motor, Supervisor, Node
 from controller.device import Device
 import gymnasium as gym
 import math
+import os
 
+
+def latest_model(algorithm):
+    models_dir = "models"
+    models = [int(model.split(".")[0]) for model in os.listdir(f"{models_dir}/{algorithm}")]
+    models.sort()
+    return f"{models_dir}/{algorithm}/{models[-1]}.zip"
 
 def make_env(Env, rank: int, seed: int = 0):
     """
