@@ -127,7 +127,10 @@ class Environment(gymnasium.Env):
 
         # Calculate the equation of the line (y = mx + b)
         if m is None:
-            m = (line_point2[1] - line_point1[1]) / (line_point2[0] - line_point1[0])
+            if line_point2[0] == line_point1[0]:
+                m = 1000
+            else:
+                m = (line_point2[1] - line_point1[1]) / (line_point2[0] - line_point1[0])
 
         if b is None:
             b = line_point1[1] - m * line_point1[0]
