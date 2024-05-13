@@ -4,14 +4,6 @@ from stable_baselines3 import PPO, SAC, DDPG, DQN
 from .environment import Environment
 from .utils import latest_model
 
-def test_model1(algorithm, algo_name):
-    env = Environment()
-    model_path = latest_model(algo_name)
-    model = algorithm.load(model_path, env=env)
-
-    mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=10, warn=False)
-    print(f"mean_reward: {mean_reward:.2f} +/- {std_reward:.2f}")
-
 
 def test_model(algorithm, algo_name):
     env = Environment()
@@ -19,11 +11,12 @@ def test_model(algorithm, algo_name):
     model = algorithm.load(model_path, env=env)
 
     num_wins = 0
-    episodes = 10
+    episodes = 1
     goal_position = env.goal_position
     width_object = env.goal_distance * 2
-    metrics_info = {"num_episodes": episodes, "num_successful_trials": num_wins, "time_to_reach_goal": 0,
-                    "energy_consumption": 0, "distance_to_goal": 0}
+    total_time = 0
+    energy_consumption = 0
+    position = (0, 0)
 
     for ep in range(episodes):
         obs, _ = env.reset()
@@ -31,10 +24,21 @@ def test_model(algorithm, algo_name):
         while not done:
             action, _states = model.predict(obs)
             obs, reward, done, win, info = env.step(action.item())
+            if done:
+                print("Episode finished")
             if win:
                 num_wins += 1
+                total_time += info["time"]
+                position += info["gps_readings"]
+                energy_consumption += info["battery"]
                 print("Goal Reached")
 
+    metrics_info = {"num_episodes": episodes, "num_successful_trials": num_wins, "time_to_reach_goal": total_time,
+                    "energy_consumption": energy_consumption, "distance_to_goal": position,
+                    "goal_position": goal_position,
+                    "width_object": width_object}
+
+    print_metrics(metrics_info)
 
 
 def main(algo_name=None):

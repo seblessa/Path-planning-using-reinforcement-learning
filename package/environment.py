@@ -164,6 +164,7 @@ class Environment(gymnasium.Env):
         cmd_vel(self.robot, 0, 0)
         self.num_timesteps = 0
         self.last_action = -1
+        self.time_start = time.time()
         obs = self.get_obs()
         for i in range(len(obs)):
             if math.isinf(obs[i]):
