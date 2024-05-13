@@ -1,11 +1,11 @@
 from .metrics import print_metrics
 from stable_baselines3.common.evaluation import evaluate_policy
-from stable_baselines3 import PPO, SAC, DDPG, DQN
+from stable_baselines3 import PPO, A2C, DQN
 from .environment import Environment
 from .utils import latest_model
 
 
-def test_model(algorithm, algo_name):
+def test_model1(algorithm, algo_name):
     env = Environment()
     model_path = latest_model(algo_name)
     model = algorithm.load(model_path, env=env)
@@ -40,17 +40,13 @@ def test_model(algorithm, algo_name):
 
     print_metrics(metrics_info)
 
-
 def main(algo_name=None):
     if algo_name == "PPO":
         print("Testing PPO")
         test_model(PPO, algo_name)
-    elif algo_name == "SAC":
-        print("Testing SAC")
-        test_model(SAC, algo_name)
-    elif algo_name == "DDPG":
-        print("Testing DDPG")
-        test_model(DDPG, algo_name)
+    elif algo_name == "A2C":
+        print("Testing A2C")
+        test_model(A2C, algo_name)
     elif algo_name == "DQN":
         print("Testing DQN")
         test_model(DQN, algo_name)
