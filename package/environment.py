@@ -6,10 +6,10 @@ import numpy as np
 from controller import Robot, Lidar, GPS, Supervisor
 from package import cmd_vel, move_forward, rotate
 
-
 MOVE_FORWARD = 0
 ROTATE_LEFT = 1
 ROTATE_RIGHT = 2
+
 
 # TODO: Improve the reward function
 
@@ -20,6 +20,8 @@ class Environment(gymnasium.Env):
         self.action_space = spaces.Discrete(3)
 
         self.robot: Supervisor = Supervisor()
+        #self.robot.simulationSetMode(0)
+
         self.robot_node = self.robot.getFromDef("robot")
 
         self.translation_node = self.robot_node.getField("translation")
@@ -40,7 +42,7 @@ class Environment(gymnasium.Env):
         self.initial_position = (0, 0)
         self.goal_position = (1.50, 1.70)
         self.goal_distance = 0.1
-        
+
         self.min_safe_distance = 0.3
         self.lose_distance = 0.1
 
@@ -56,10 +58,10 @@ class Environment(gymnasium.Env):
             cmd_vel(self.robot, 0.1, 0)
             self.robot.step(self.timestep)
         elif action == 1:
-            cmd_vel(self.robot, 0.1, 0.1)
+            cmd_vel(self.robot, 0.1, 0.5)
             self.robot.step(self.timestep)
         elif action == 2:
-            cmd_vel(self.robot, 0.1, -0.1)
+            cmd_vel(self.robot, 0.1, -0.5)
             self.robot.step(self.timestep)
 
         self.last_action = action
@@ -103,7 +105,9 @@ class Environment(gymnasium.Env):
             return reward, False
 
     def calculate_distance(self, gps_readings):
-        return round(math.sqrt((gps_readings[0] - self.goal_position[0]) ** 2 + (gps_readings[1] - self.goal_position[1]) **2), 2)
+        return round(
+            math.sqrt((gps_readings[0] - self.goal_position[0]) ** 2 + (gps_readings[1] - self.goal_position[1]) ** 2),
+            2)
 
     def calculate_direction_reward(self, gps_readings):
         if self.last_action == 1:
@@ -120,7 +124,8 @@ class Environment(gymnasium.Env):
         return 0
 
     def reached_goal(self, actual_location):
-        if abs(actual_location[0] - self.goal_position[0]) < self.goal_distance and abs(actual_location[1] - self.goal_position[1]) < self.goal_distance:
+        if abs(actual_location[0] - self.goal_position[0]) < self.goal_distance and abs(
+                actual_location[1] - self.goal_position[1]) < self.goal_distance:
             return True
         return False
 
@@ -136,6 +141,8 @@ class Environment(gymnasium.Env):
         cmd_vel(self.robot, 0, 0)
         self.num_timesteps = 0
         self.last_action = -1
+        self.robot.batterySensorDisable()
+        self.robot.batterySensorEnable(self.timestep)
         obs = self.get_obs()
         for i in range(len(obs)):
             if math.isinf(obs[i]):

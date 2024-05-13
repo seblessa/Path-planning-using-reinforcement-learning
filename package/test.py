@@ -3,9 +3,10 @@ from .metrics import success_rate, time_to_reach_goal, distance_to_goal, energy_
 from stable_baselines3 import PPO
 import os
 
+
 # TODO: Implement metrics
 
-def run():
+def run(model_path: str = None, goal_position: (float, float) = (0,0)):
     env = Environment()
     env.reset()
 

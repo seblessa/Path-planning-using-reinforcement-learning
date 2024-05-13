@@ -14,3 +14,9 @@ Path planning using reinforcement learning
 Goal: Same as the previous topic, but the robot instead uses reinforcement learning (RL) models to perform the path planning, based on the LiDAR readings. You may explore more classic RL algorithms, such Q-learning and SARSA, or deep learning models, such as DQN, PPO and DDPG. For the DRL library, if you use Python, you can use Gymnasium, alongside the Stable-Baselines3 package (which contains many DRL models).
 Other ideas:
 - Do your algorithms work if part/all of the map is unknown?
+
+
+
+
+
+conda create -n GymEnv python=3.10 pytorch::pytorch torchvision torchaudio -c pytorch

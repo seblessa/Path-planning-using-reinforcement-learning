@@ -1,6 +1,27 @@
-import math
+from stable_baselines3.common.utils import set_random_seed
 from controller import Robot, Motor, Supervisor, Node
 from controller.device import Device
+import gymnasium as gym
+import math
+
+
+def make_env(Env, rank: int, seed: int = 0):
+    """
+    Utility function for multiprocessed env.
+
+    :param Env: (Environment) the environment
+    :param num_env: (int) the number of environment you wish to have in subprocesses
+    :param seed: (int) the inital seed for RNG
+    :param rank: (int) index of the subprocess
+    :return: (Callable)
+    """
+
+    def _init() -> gym.Env:
+        Env.reset(seed=seed + rank)
+        return Env
+
+    set_random_seed(seed)
+    return _init
 
 
 # Prints the type of all the devices in a scene with a single robot.
@@ -21,7 +42,7 @@ def print_devices() -> None:
 # https://cyberbotics.com/doc/guide/epuck?version=R2021a
 AXLE_LENGTH: float = 0.057  # obtained with manual calibration. It should be 0.052 m according to the documentation.
 WHEEL_RADIUS: float = 0.0205
-MAX_SPEED: float = 6.28
+MAX_SPEED: float = 20
 
 # tangential/linear speed in m/s.
 # tangential speed = angular speed * wheel radius
