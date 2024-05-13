@@ -16,7 +16,12 @@ Other ideas:
 - Do your algorithms work if part/all of the map is unknown?
 
 
-
+Proximal Policy Optimization (PPO)
+Soft Actor-Critic (SAC) 
+Deep Deterministic Policy Gradient (DDPG)
+State-Action-Reward-State-Action (SARSA)
+Q-learning
+Deep Q-Network (DQN) 
 
 
 conda create -n GymEnv python=3.10 pytorch::pytorch torchvision torchaudio -c pytorch
