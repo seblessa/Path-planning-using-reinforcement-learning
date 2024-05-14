@@ -35,12 +35,12 @@ def print_metrics(info):
     Energy_consumption = energy_consumption(num_episodes, energy)
 
     if Success_rate == 0:
-        print("The robot was not able to reach the goal")
+        print("\nThe robot was not able to reach the goal\n")
     else:
-        print(f"The sucess rate was {Success_rate}%")
+        print(f"\nThe sucess rate was {Success_rate * 100}%")
         print(f"The median time to reach the goal was {Time_to_reach_goal} seconds")
         print(f"The average distance of the robot from the goal was {Distance_to_goal} meters")
         if Energy_consumption == -1:
-            print("The robot did not have the battery turned on.")
+            print("The robot did not have the battery turned on.\n")
         else:
-            print(f"The mean energy consumption was {Energy_consumption} Jules")
+            print(f"The mean energy consumption was {Energy_consumption} Jules\n")

@@ -5,13 +5,16 @@ from .metrics import print_metrics
 from .utils import latest_model
 
 
-def test_model(algorithm, algo_name):
+def test_model(algorithm, algo_name,board):
     env = Environment()
-    model_path = latest_model(algo_name)
+    model_path = latest_model(algo_name,board)
+
+    print(f"\nTesting {model_path}\n")
+
     model = algorithm.load(model_path, env=env)
 
     num_wins = 0
-    episodes = 1
+    episodes = 5
     goal_position = env.goal_position
     width_object = env.goal_distance * 2
     total_time = 0
@@ -41,22 +44,16 @@ def test_model(algorithm, algo_name):
     print_metrics(metrics_info)
 
 
-def main(algo_name=None):
+def main(algo_name=None,board=None):
     if algo_name == "PPO":
-        print("Testing PPO")
-        test_model(PPO, algo_name)
+        test_model(PPO, algo_name, board)
     elif algo_name == "A2C":
-        print("Testing A2C")
-        test_model(A2C, algo_name)
+        test_model(A2C, algo_name, board)
     elif algo_name == "DQN":
-        print("Testing DQN")
-        test_model(DQN, algo_name)
+        test_model(DQN, algo_name, board)
     elif algo_name == "QRDQN":
-        print("Testing QRDQN")
-        test_model(QRDQN, algo_name)
+        test_model(QRDQN, algo_name, board)
     elif algo_name == "ARS":
-        print("Testing ARS")
-        test_model(ARS, algo_name)
+        test_model(ARS, algo_name, board)
     elif algo_name == "TRPO":
-        print("Testing TRPO")
-        test_model(TRPO, algo_name)
+        test_model(TRPO, algo_name, board)

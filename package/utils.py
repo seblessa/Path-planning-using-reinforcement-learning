@@ -6,11 +6,16 @@ import math
 import os
 
 
-def latest_model(algorithm):
+def latest_model(algorithm, board):
     models_dir = "models"
-    models = [int(model.split(".")[0]) for model in os.listdir(f"{models_dir}/{algorithm}")]
+
+    if f"final.zip" in os.listdir(f"{models_dir}/{algorithm}/{board}"):
+        return f"{models_dir}/{algorithm}/{board}/final.zip"
+
+    models = [int(model.split(".")[0]) for model in os.listdir(f"{models_dir}/{algorithm}/{board}")]
     models.sort()
-    return f"{models_dir}/{algorithm}/{models[-1]}.zip"
+    return f"{models_dir}/{algorithm}/{board}/{models[-1]}.zip"
+
 
 def make_env(Env, rank: int, seed: int = 0):
     """

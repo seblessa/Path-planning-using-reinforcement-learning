@@ -20,8 +20,8 @@ TexturedBackground {
 TexturedBackgroundLight {
 }
 DEF robot Robot {
-  translation 0.38 0.34 -3.19834e-05
-  rotation 0 0 0.9999999999999999 0
+  translation 0.4499122334330627 0.3412167027052302 -3.215058405509237e-05
+  rotation -0.0005325110540971515 -0.04493724487101208 0.9989896698441781 0.018705046012925632
   children [
     TouchSensor {
       translation 0 0 0.04
@@ -47,7 +47,7 @@ DEF robot Robot {
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        position 119.35240327123407
+        position 122.83610672789953
         axis 0 1 0
         anchor 0 0 0.02
       }
@@ -63,8 +63,8 @@ DEF robot Robot {
         }
       ]
       endPoint DEF EPUCK_LEFT_WHEEL Solid {
-        translation 0 0.025999999999999995 0.02
-        rotation 0 1 0 6.255067742001505
+        translation 0 0.025999999999978 0.02
+        rotation 0 -1 0 2.827599415692196
         children [
           DEF EPUCK_WHEEL Pose {
             rotation 1 0 0 -1.570796
@@ -196,11 +196,13 @@ DEF robot Robot {
           density -1
           mass 0.005
         }
+        linearVelocity 0.09036270351485289 0.0012674129175390277 9.015372710807863e-07
+        angularVelocity -0.06302498745428253 4.481690818505494 0.292893807540269
       }
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        position 123.56786294345844
+        position 127.10486543475503
         axis 0 1 0
         anchor 0 0 0.02
       }
@@ -216,8 +218,8 @@ DEF robot Robot {
         }
       ]
       endPoint DEF EPUCK_RIGHT_WHEEL Solid {
-        translation 0 -0.026000000000000006 0.02
-        rotation 0 -1 0 2.095843200133293
+        translation 0 -0.025999999999956013 0.02
+        rotation 0 1 0 1.4411592911632969
         children [
           Pose {
             rotation 1 0 0 3.14159
@@ -229,6 +231,8 @@ DEF robot Robot {
         name "right wheel"
         boundingObject USE EPUCK_WHEEL_BOUNDING_OBJECT
         physics USE EPUCK_WHEEL_PHYSICS
+        linearVelocity 0.10558633772333705 0.0015021914720520985 -1.022033791708862e-06
+        angularVelocity -0.07545638521963507 5.315744853771522 0.2932715115456573
       }
     }
     DEF BATTERY_CONNECTOR Pose {
@@ -1101,7 +1105,12 @@ DEF robot Robot {
   }
   controller "<extern>"
   supervisor TRUE
+  battery [
+    9999951539.318073, 99938.94127643765, 2000
+  ]
   cpuConsumption 1.11
+  linearVelocity 0.09786856024463841 0.0013849365175843415 9.579855885277746e-07
+  angularVelocity -0.0003321274845972576 0.021155754184479986 0.29393360283693526
 }
 RectangleArena {
   translation 1 1 0
@@ -1334,15 +1343,4 @@ Solid {
     }
   ]
   name "solid(17)"
-}
-Solid {
-  translation 0.91 1 0
-  children [
-    Shape {
-      geometry Box {
-        size 0.1 0.1 0.1
-      }
-    }
-  ]
-  name "solid(18)"
 }

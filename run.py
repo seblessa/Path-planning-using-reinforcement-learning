@@ -1,6 +1,9 @@
 from package import testing, training
 
 
+# BOARD = "door"
+BOARD = "circle"
+
 def choose_model():
     print("Please select an algorithm to train:")
     print("1. PPO")
@@ -35,7 +38,8 @@ if __name__ == '__main__':
     option = input("Enter your choice: ")
 
     if option == "1":
-        training(choose_model())
-
-    else:  # option == "2"
-        testing(choose_model())
+        training(choose_model(),BOARD)
+    elif option == "2":
+        testing(choose_model(),BOARD)
+    else:
+        raise ValueError("No option selected.")
