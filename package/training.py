@@ -20,7 +20,8 @@ def train_model(algo, algo_name, board):
                 print(f"\nModel {model_path} is a final model. Exiting...\n")
                 return
             model = algo.load(model_path, env=env)
-            iters = int(int(model_path.split("/")[3].split(".")[0]))
+            print(model_path)
+            iters = int(int(model_path.split("/")[3].split(".")[0])) % TIMESTEPS
             print(f"\nLoaded model with {iters} iterations\n")
         else:
             model = algo(policy, env, verbose=1,
