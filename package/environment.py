@@ -158,7 +158,18 @@ class Environment(gymnasium.Env):
 
     def reset(self, seed=None, options=None):
         super().reset(seed=seed)
-        self.robot.simulationReset()
+
+        # randomiza a posição inicial e final
+        if self.random_position:
+            self.initial_position = (np.random.uniform(0, 2), np.random.uniform(0, 2))
+            self.goal_position = (np.random.uniform(0, 2), np.random.uniform(0, 2))
+            self.translation_node.setSFVec3f([self.initial_position[0], self.initial_position[1], 0.0])
+            self.robot_node.resetPhysics()
+            self.robot.step()
+
+        else:
+            self.robot.simulationReset()
+
         cmd_vel(self.robot, 0, 0)
         self.num_timesteps = 0
         self.last_action = -1
