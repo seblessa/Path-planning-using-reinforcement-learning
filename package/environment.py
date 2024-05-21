@@ -18,12 +18,9 @@ class Environment(gymnasium.Env):
 
         self.robot: Supervisor = Supervisor()
         self.robot_node = self.robot.getFromDef("robot")
-
         self.translation_node = self.robot_node.getField("translation")
 
         self.timestep: int = int(self.robot.getBasicTimeStep())
-
-        self.battery = self.robot.batterySensorEnable(self.timestep)
 
         self.lidar: Lidar = self.robot.getDevice("lidar")
         self.lidar.enable(self.timestep)
@@ -38,6 +35,7 @@ class Environment(gymnasium.Env):
         self.last_position = self.gps_info()
         self.last_distance = None
 
+        self.random_position = True
         self.initial_position = (0, 0)
         self.goal_position = (1.50, 1.70)
         self.goal_distance = 0.1
@@ -48,7 +46,6 @@ class Environment(gymnasium.Env):
         self.num_timesteps = 0
         self.max_timesteps = 5000
         self.last_action = -1
-        self.start_energy = self.robot.batterySensorGetValue()
 
     def step(self, action):
         if self.last_action == -1:
@@ -74,8 +71,7 @@ class Environment(gymnasium.Env):
         reward, terminated = self.calculate_reward(actual_location, lidar_data)
         self.last_position = actual_location
         return np.array(lidar_data, dtype=np.float32), reward, terminated, self.reached_goal(actual_location), {
-            "gps_readings": actual_location, "battery": (self.start_energy - self.robot.batterySensorGetValue()),
-            "time": time.time() - self.time_start}
+            "gps_readings": actual_location, "time": time.time() - self.time_start}
 
     def get_obs(self):
         lidar_data = self.lidar.getRangeImage()

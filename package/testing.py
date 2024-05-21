@@ -14,11 +14,10 @@ def test_model(algorithm, algo_name,board):
     model = algorithm.load(model_path, env=env)
 
     num_wins = 0
-    episodes = 5
+    episodes = 2
     goal_position = env.goal_position
     width_object = env.goal_distance * 2
     total_time = 0
-    energy_consumption = 0
     position = (0, 0)
 
     for ep in range(episodes):
@@ -33,11 +32,10 @@ def test_model(algorithm, algo_name,board):
                 num_wins += 1
                 total_time += info["time"]
                 position += info["gps_readings"]
-                energy_consumption += info["battery"]
                 print("Goal Reached")
 
     metrics_info = {"num_episodes": episodes, "num_successful_trials": num_wins, "time_to_reach_goal": total_time,
-                    "energy_consumption": energy_consumption, "distance_to_goal": position,
+                    "distance_to_goal": position,
                     "goal_position": goal_position,
                     "width_object": width_object}
 
