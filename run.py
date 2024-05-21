@@ -1,8 +1,8 @@
 from package import testing, training
 
 
-# BOARD = "door"
-BOARD = "circle"
+BOARD = "door"
+# BOARD = "circle"
 
 def choose_model():
     print("Please select an algorithm to train:")

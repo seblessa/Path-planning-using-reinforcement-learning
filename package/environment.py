@@ -3,6 +3,7 @@ from gymnasium import spaces
 import math
 import time
 import numpy as np
+from map_script import generate_map
 from controller import Robot, Lidar, GPS, Supervisor
 from package import cmd_vel, move_forward, rotate
 
