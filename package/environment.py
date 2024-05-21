@@ -20,6 +20,10 @@ class Environment(gymnasium.Env):
         self.robot_node = self.robot.getFromDef("robot")
         self.translation_node = self.robot_node.getField("translation")
 
+        self.start_node = self.robot.getFromDef("start")
+
+        self.goal_node = self.robot.getFromDef("goal")
+
         self.timestep: int = int(self.robot.getBasicTimeStep())
 
         self.lidar: Lidar = self.robot.getDevice("lidar")
@@ -38,6 +42,7 @@ class Environment(gymnasium.Env):
         self.random_position = True
         self.initial_position = (0, 0)
         self.goal_position = (1.50, 1.70)
+
         self.goal_distance = 0.1
 
         self.min_safe_distance = 0.3
@@ -164,6 +169,8 @@ class Environment(gymnasium.Env):
             self.initial_position = (np.random.uniform(0, 2), np.random.uniform(0, 2))
             self.goal_position = (np.random.uniform(0, 2), np.random.uniform(0, 2))
             self.translation_node.setSFVec3f([self.initial_position[0], self.initial_position[1], 0.0])
+            self.goal_node.getField("translation").setSFVec3f([self.goal_position[0], self.goal_position[1], -0.049])
+            self.start_node.getField("translation").setSFVec3f([self.initial_position[0], self.initial_position[1], -0.049])
             self.robot_node.resetPhysics()
             self.robot.step()
 
