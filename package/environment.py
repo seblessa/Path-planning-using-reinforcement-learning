@@ -1,9 +1,10 @@
 import gymnasium
 from gymnasium import spaces
 import math
+import subprocess
 import time
 import numpy as np
-from map_script import generate_map
+from .map_script import generate_map
 from controller import Robot, Lidar, GPS, Supervisor
 from package import cmd_vel, move_forward, rotate
 
@@ -12,18 +13,22 @@ ROTATE_LEFT = 1
 ROTATE_RIGHT = 2
 
 
+MACOS_PATH = "/Applications/Webots.app/Contents/MacOS/webots"
+WINDOW_PATH = ""
+
+WEBOTS_COMMAND = [MACOS_PATH, "--mode=fast", "worlds/generated_map.wbt"]
+
+
 class Environment(gymnasium.Env):
     def __init__(self):
         self.observation_space = spaces.Box(low=0, high=math.inf, shape=(100,), dtype=np.float32)
         self.action_space = spaces.Discrete(3)
+        generate_map()
+        self.webots_process = subprocess.Popen(WEBOTS_COMMAND)
 
         self.robot: Supervisor = Supervisor()
         self.robot_node = self.robot.getFromDef("robot")
         self.translation_node = self.robot_node.getField("translation")
-
-        self.start_node = self.robot.getFromDef("start")
-
-        self.goal_node = self.robot.getFromDef("goal")
 
         self.timestep: int = int(self.robot.getBasicTimeStep())
 
@@ -36,6 +41,8 @@ class Environment(gymnasium.Env):
         # self.camera = self.robot.getDevice('camera')
         # self.camera.enable(self.timestep)
         self.time_start = 0
+        self.initial_timestamp = time.time()
+        self.change_map_timeout = 60
 
         self.last_position = self.gps_info()
         self.last_distance = None
@@ -43,7 +50,6 @@ class Environment(gymnasium.Env):
         self.random_position = True
         self.initial_position = (0, 0)
         self.goal_position = (1.50, 1.70)
-
         self.goal_distance = 0.1
 
         self.min_safe_distance = 0.3
@@ -52,6 +58,10 @@ class Environment(gymnasium.Env):
         self.num_timesteps = 0
         self.max_timesteps = 5000
         self.last_action = -1
+
+    def change_map(self):
+        generate_map()
+        self.webots_process = subprocess.Popen(WEBOTS_COMMAND)
 
     def step(self, action):
         if self.last_action == -1:
@@ -164,14 +174,15 @@ class Environment(gymnasium.Env):
 
     def reset(self, seed=None, options=None):
         super().reset(seed=seed)
+        if time.time() - self.initial_timestamp > self.change_map_timeout:
+            self.change_map()
+            self.initial_timestamp = time.time()
 
         # randomiza a posição inicial e final
         if self.random_position:
             self.initial_position = (np.random.uniform(0, 2), np.random.uniform(0, 2))
             self.goal_position = (np.random.uniform(0, 2), np.random.uniform(0, 2))
             self.translation_node.setSFVec3f([self.initial_position[0], self.initial_position[1], 0.0])
-            self.goal_node.getField("translation").setSFVec3f([self.goal_position[0], self.goal_position[1], -0.049])
-            self.start_node.getField("translation").setSFVec3f([self.initial_position[0], self.initial_position[1], -0.049])
             self.robot_node.resetPhysics()
             self.robot.step()
 

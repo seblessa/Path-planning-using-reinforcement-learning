@@ -15,13 +15,13 @@ def train_model(algo, algo_name, board):
 
     if os.path.exists(f"{models_dir}/{algo_name}/{board}"):
         if os.listdir(f"{models_dir}/{algo_name}/{board}"):
-            model_path = latest_model(algo_name,board)
+            model_path = latest_model(algo_name, board)
             if model_path.endswith("final.zip"):
                 print(f"\nModel {model_path} is a final model. Exiting...\n")
                 return
             model = algo.load(model_path, env=env)
             print(model_path)
-            iters = int(int(model_path.split("/")[3].split(".")[0])) % TIMESTEPS
+            iters = int(int(model_path.split("/")[3].split(".")[0]))
             print(f"\nLoaded model with {iters} iterations\n")
         else:
             model = algo(policy, env, verbose=1,
@@ -38,9 +38,9 @@ def train_model(algo, algo_name, board):
     print(f"Training {models_dir}/{algo_name}/{board}")
 
     while True:
-        iters += 1
+        iters += TIMESTEPS
         model.learn(total_timesteps=TIMESTEPS, reset_num_timesteps=False, tb_log_name=algo_name)
-        model.save(f"{models_dir}/{algo_name}/{board}/{TIMESTEPS * iters}")
+        model.save(f"{models_dir}/{algo_name}/{board}/{iters}")
 
 
 def main(algo_name=None, board=None):

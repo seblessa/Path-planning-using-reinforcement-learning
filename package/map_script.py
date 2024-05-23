@@ -3,10 +3,8 @@ import random
 
 
 def generate_map(threshold=0.5):
-    parent_directory = os.path.dirname(os.getcwd())
-    directory = os.path.join(parent_directory, "worlds")
-    input_file = os.path.join(directory, "door.wbt")
-    output_file = os.path.join(directory, "generated_map.wbt")
+    input_file = "worlds/door.wbt"
+    output_file = "worlds/generated_map.wbt"
 
     with open(input_file, 'r') as f:
         lines = f.readlines()
