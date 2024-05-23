@@ -30,6 +30,10 @@ class Environment(gymnasium.Env):
         self.robot_node = self.robot.getFromDef("robot")
         self.translation_node = self.robot_node.getField("translation")
 
+        self.start_node = self.robot.getFromDef("start")
+
+        self.goal_node = self.robot.getFromDef("goal")
+
         self.timestep: int = int(self.robot.getBasicTimeStep())
 
         self.lidar: Lidar = self.robot.getDevice("lidar")
@@ -177,6 +181,9 @@ class Environment(gymnasium.Env):
         if time.time() - self.initial_timestamp > self.change_map_timeout:
             self.change_map()
             self.initial_timestamp = time.time()
+
+        self.goal_node.getField("translation").setSFVec3f([self.goal_position[0], self.goal_position[1], -0.049])
+        self.start_node.getField("translation").setSFVec3f([self.initial_position[0], self.initial_position[1], -0.049])
 
         # randomiza a posição inicial e final
         if self.random_position:
