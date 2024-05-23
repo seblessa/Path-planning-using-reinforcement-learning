@@ -4,7 +4,13 @@ import time
 
 def load_world():
     # Full path to the Webots executable
-    webots_path = "/Applications/Webots.app/Contents/MacOS/webots"
+    if platform.system() == "macOS":
+        webots_path = "/Applications/Webots.app/Contents/MacOS/webots"
+    elif platform.system() == "Windows":
+        webots_path = "C:\Program Files\Webots\lib\controller\python"
+    else:
+        webots_path = "C:\Program Files\Webots\lib\controller\python" # change for linux
+
 
     # List of available world files
     world_files = {

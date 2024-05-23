@@ -7,16 +7,21 @@ import numpy as np
 from .map_script import generate_map
 from controller import Robot, Lidar, GPS, Supervisor
 from package import cmd_vel, move_forward, rotate
+import platform
 
 MOVE_FORWARD = 0
 ROTATE_LEFT = 1
 ROTATE_RIGHT = 2
 
+if platform.system() == "macOS":
+    PATH = "/Applications/Webots.app/Contents/MacOS/webots"
+elif platform.system() == "Windows":
+    PATH = "C:\Program Files\Webots\lib\controller\python"
+else:
+    PATH = "C:\Program Files\Webots\lib\controller\python" # change for linux
 
-MACOS_PATH = "/Applications/Webots.app/Contents/MacOS/webots"
-WINDOW_PATH = ""
 
-WEBOTS_COMMAND = [MACOS_PATH, "--mode=fast", "worlds/generated_map.wbt"]
+WEBOTS_COMMAND = [PATH, "--mode=fast", "worlds/generated_map.wbt"]
 
 
 class Environment(gymnasium.Env):
@@ -24,7 +29,7 @@ class Environment(gymnasium.Env):
         self.observation_space = spaces.Box(low=0, high=math.inf, shape=(100,), dtype=np.float32)
         self.action_space = spaces.Discrete(3)
         generate_map()
-        self.webots_process = subprocess.Popen(WEBOTS_COMMAND)
+        #self.webots_process = subprocess.Popen(WEBOTS_COMMAND)
 
         self.robot: Supervisor = Supervisor()
         self.robot_node = self.robot.getFromDef("robot")
@@ -178,18 +183,14 @@ class Environment(gymnasium.Env):
 
     def reset(self, seed=None, options=None):
         super().reset(seed=seed)
-        if time.time() - self.initial_timestamp > self.change_map_timeout:
-            self.change_map()
-            self.initial_timestamp = time.time()
-
-        self.goal_node.getField("translation").setSFVec3f([self.goal_position[0], self.goal_position[1], -0.049])
-        self.start_node.getField("translation").setSFVec3f([self.initial_position[0], self.initial_position[1], -0.049])
 
         # randomiza a posição inicial e final
         if self.random_position:
-            self.initial_position = (np.random.uniform(0, 2), np.random.uniform(0, 2))
-            self.goal_position = (np.random.uniform(0, 2), np.random.uniform(0, 2))
+            self.initial_position = (np.random.uniform(0.05, 1.95), np.random.uniform(0.05, 1.95))
+            self.goal_position = (np.random.uniform(0.05, 1.95), np.random.uniform(0.05, 1.95))
             self.translation_node.setSFVec3f([self.initial_position[0], self.initial_position[1], 0.0])
+            self.goal_node.getField("translation").setSFVec3f([self.goal_position[0], self.goal_position[1], -0.049])
+            self.start_node.getField("translation").setSFVec3f([self.initial_position[0], self.initial_position[1], -0.049])
             self.robot_node.resetPhysics()
             self.robot.step()
 
