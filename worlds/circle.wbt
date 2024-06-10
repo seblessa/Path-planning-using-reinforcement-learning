@@ -19903,7 +19903,7 @@ Solid {
   ]
   name "solid1707"
 }
-Solid {
+DEF goal Solid {
   translation 1.6 1.65 -0.049
   children [
     Shape {
@@ -19921,7 +19921,7 @@ Solid {
   ]
   name "goal"
 }
-Solid {
+DEF start Solid {
   translation 0.38 0.34 -0.049
   children [
     Shape {

@@ -1,9 +1,6 @@
 from package import testing, training
 
 
-BOARD = "door"
-# BOARD = "circle"
-
 def choose_model():
     print("Please select an algorithm to train:")
     print("1. PPO")
@@ -27,10 +24,11 @@ def choose_model():
     elif choice == "6":
         return "TRPO"
     else:
-        raise ValueError("No model selected.")
+        print("\nNo model selected.\n\n\n")
+        return choose_model()
 
 
-if __name__ == '__main__':
+def main():
     print("Welcome to the our training and testing environment.")
     print("Please select an option:")
     print("1. Train a model")
@@ -38,8 +36,13 @@ if __name__ == '__main__':
     option = input("Enter your choice: ")
 
     if option == "1":
-        training(choose_model(),BOARD)
+        training(choose_model())
     elif option == "2":
-        testing(choose_model(),BOARD)
+        testing(choose_model())
     else:
-        raise ValueError("No option selected.")
+        print("\nInvalid option.\n\n\n")
+        main()
+
+
+if __name__ == '__main__':
+    main()

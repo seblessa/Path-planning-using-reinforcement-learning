@@ -5,9 +5,9 @@ from .metrics import print_metrics
 from .utils import latest_model
 
 
-def test_model(algorithm, algo_name,board):
+def test_model(algorithm, algo_name):
     env = Environment()
-    model_path = latest_model(algo_name,board)
+    model_path = latest_model(algo_name)
 
     print(f"\nTesting {model_path}\n")
 
@@ -42,16 +42,19 @@ def test_model(algorithm, algo_name,board):
     print_metrics(metrics_info)
 
 
-def main(algo_name=None,board=None):
+def main(algo_name=None):
     if algo_name == "PPO":
-        test_model(PPO, algo_name, board)
+        test_model(PPO, algo_name)
     elif algo_name == "A2C":
-        test_model(A2C, algo_name, board)
+        test_model(A2C, algo_name)
     elif algo_name == "DQN":
-        test_model(DQN, algo_name, board)
+        test_model(DQN, algo_name)
     elif algo_name == "QRDQN":
-        test_model(QRDQN, algo_name, board)
+        test_model(QRDQN, algo_name)
     elif algo_name == "ARS":
-        test_model(ARS, algo_name, board)
+        test_model(ARS, algo_name)
     elif algo_name == "TRPO":
-        test_model(TRPO, algo_name, board)
+        test_model(TRPO, algo_name)
+    else:
+        print("\nNo model selected.\n\n\n")
+        main(algo_name)

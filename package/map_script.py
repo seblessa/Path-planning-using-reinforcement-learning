@@ -29,3 +29,7 @@ def generate_map(threshold=0.5):
 
     with open(output_file, 'w') as f:
         f.writelines(adjusted_lines)
+
+
+if __name__ == '__main__':
+    generate_map()
