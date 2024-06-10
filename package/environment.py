@@ -96,15 +96,14 @@ class Environment(gymnasium.Env):
         return gps_readings[0], gps_readings[1]
 
     def calculate_reward(self, gps_readings, lidar_data):
+        '''
         if self.reached_goal(gps_readings):
             return 10000, True
 
         elif self.close_to_obstacle(lidar_data) or self.num_timesteps > self.max_timesteps:
             return -10000, True
-
         else:
-            cont = 0
-            reward = 4 - self.calculate_distance(gps_readings)
+            # reward = 4 - self.calculate_distance(gps_readings)
             reward += self.calculate_direction_reward(gps_readings)
             for i in range(len(lidar_data)):
                 if lidar_data[i] < self.min_safe_distance:
@@ -114,6 +113,48 @@ class Environment(gymnasium.Env):
             reward += -0.1 * cont
             reward = round(reward, 2)
             return reward, False
+        '''
+
+        cont = 0
+        done = False
+        distance = self.calculate_distance(gps_readings)
+        normalized_distance = distance / 2
+        normalized_distance *= 100
+        reward = 0
+
+        if normalized_distance < 42:
+            if normalized_distance < 10:
+                growth_factor = 5
+                A = 2.5
+            elif normalized_distance < 25:
+                growth_factor = 4
+                A = 1.5
+            elif normalized_distance < 37:
+                growth_factor = 2.5
+                A = 1.2
+            else:
+                growth_factor = 1.2
+                A = 0.9
+            reward += A * (1 - np.exp(-growth_factor * (1 / normalized_distance)))
+
+        else:
+            reward += -normalized_distance / 100
+
+        for i in range(len(lidar_data)):
+            if math.isinf(lidar_data[i]):
+                lidar_data[i] = 10000
+
+        if self.reached_goal(gps_readings):
+            reward += 25
+            done = True
+        elif self.close_to_obstacle(lidar_data) or self.num_timesteps > self.max_timesteps:
+            reward -= 5
+            done = True
+        elif np.any(lidar_data[lidar_data > self.min_safe_distance]):
+            reward -= 0.001
+
+        return reward, done
+
 
     def calculate_distance(self, gps_readings):
         return round(
