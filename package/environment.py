@@ -55,6 +55,8 @@ class Environment(gymnasium.Env):
         self.max_timesteps = 5000
         self.last_action = -1
 
+        self.last_reward = 0
+
     def step(self, action):
         if self.last_action == -1:
             self.time_start = time.time()
@@ -77,8 +79,10 @@ class Environment(gymnasium.Env):
         lidar_data = self.get_obs()
 
         reward, terminated = self.calculate_reward(actual_location, lidar_data)
+        atual_reward = reward - self.last_reward
+        self.last_reward = reward
         self.last_position = actual_location
-        return np.array(lidar_data, dtype=np.float32), reward, terminated, self.reached_goal(actual_location), {
+        return np.array(lidar_data, dtype=np.float32), atual_reward, terminated, self.reached_goal(actual_location), {
             "gps_readings": actual_location, "time": time.time() - self.time_start}
 
     def get_obs(self):
@@ -184,6 +188,7 @@ class Environment(gymnasium.Env):
             self.robot.simulationReset()
 
         cmd_vel(self.robot, 0, 0)
+        self.last_reward = 0
         self.num_timesteps = 0
         self.last_action = -1
         self.time_start = time.time()
