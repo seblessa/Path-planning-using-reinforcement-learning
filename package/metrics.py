@@ -13,8 +13,7 @@ def distance_to_goal(gps_readings, goal_position, width_of_object):
     if gps_readings == (0, 0):
         return 0
     distance_to_goal = math.sqrt((gps_readings[0] - goal_position[0]) ** 2 + (gps_readings[1] - goal_position[1]) ** 2)
-    return width_of_object / distance_to_goal
-
+    return abs(distance_to_goal)
 
 
 def print_metrics(info):
