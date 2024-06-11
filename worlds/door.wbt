@@ -20,8 +20,8 @@ TexturedBackground {
 TexturedBackgroundLight {
 }
 DEF robot Robot {
-  translation 0.38 0.34 -3.21506e-05
-  rotation 0.004086988562297277 -0.9999916482273697 -9.589706626575503e-09 -5.307179586466759e-06
+  translation 0.05 0.05 0
+  rotation -0.010571753819152766 0.012598876998993744 0.9998647440126848 1.3898761304793699
   children [
     TouchSensor {
       translation 0 0 0.04
@@ -34,7 +34,7 @@ DEF robot Robot {
     }
     Lidar {
       translation 0 0 0.03
-      horizontalResolution 100
+      horizontalResolution 20
       fieldOfView 1
       numberOfLayers 1
       near 0.04
@@ -47,7 +47,7 @@ DEF robot Robot {
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        position 122.83610672789953
+        position 135.79139309637137
         axis 0 1 0
         anchor 0 0 0.02
       }
@@ -63,8 +63,8 @@ DEF robot Robot {
         }
       ]
       endPoint DEF EPUCK_LEFT_WHEEL Solid {
-        translation 0 0.025999999999978 0.02
-        rotation 0 -1 0 2.827599415692196
+        translation 0 0.025999999999957658 0.020000000000000004
+        rotation -5.912530518735411e-17 1 -2.5867321019467425e-17 -2.4386836615795366
         children [
           DEF EPUCK_WHEEL Pose {
             rotation 1 0 0 -1.570796
@@ -200,7 +200,7 @@ DEF robot Robot {
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        position 127.10486543475503
+        position 140.07830671887595
         axis 0 1 0
         anchor 0 0 0.02
       }
@@ -216,8 +216,8 @@ DEF robot Robot {
         }
       ]
       endPoint DEF EPUCK_RIGHT_WHEEL Solid {
-        translation 0 -0.025999999999956013 0.02
-        rotation 0 1 0 1.4411592911632969
+        translation -6.938893903907228e-18 -0.025999999999918012 0.020000000000000004
+        rotation -6.955519202115596e-17 0.9999999999999999 1.5215198254627867e-17 1.8482299609250477
         children [
           Pose {
             rotation 1 0 0 3.14159
@@ -1102,7 +1102,7 @@ DEF robot Robot {
   controller "<extern>"
   supervisor TRUE
   battery [
-    9999951539.318073, 99938.94127643765, 2000
+    9999951534.084404, 99938.94127643765, 2000
   ]
   cpuConsumption 1.11
 }
@@ -1134,7 +1134,7 @@ DEF goal Solid {
   name "goal"
 }
 DEF start Solid {
-  translation 0.38 0.34 -0.049
+  translation 0.05 0.05 -0.049
   children [
     Shape {
       appearance Appearance {

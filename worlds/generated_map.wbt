@@ -20,8 +20,8 @@ TexturedBackground {
 TexturedBackgroundLight {
 }
 DEF robot Robot {
-  translation 0.38 0.34 -3.21506e-05
-  rotation 0.004086988562297277 -0.9999916482273697 -9.589706626575503e-09 -5.307179586466759e-06
+  translation 0.05 0.05 0
+  rotation -0.010571753819152766 0.012598876998993744 0.9998647440126848 1.3898761304793699
   children [
     TouchSensor {
       translation 0 0 0.04
@@ -34,7 +34,7 @@ DEF robot Robot {
     }
     Lidar {
       translation 0 0 0.03
-      horizontalResolution 100
+      horizontalResolution 20
       fieldOfView 1
       numberOfLayers 1
       near 0.04
@@ -47,7 +47,7 @@ DEF robot Robot {
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        position 122.83610672789953
+        position 135.79139309637137
         axis 0 1 0
         anchor 0 0 0.02
       }
@@ -63,8 +63,8 @@ DEF robot Robot {
         }
       ]
       endPoint DEF EPUCK_LEFT_WHEEL Solid {
-        translation 0 0.025999999999978 0.02
-        rotation 0 -1 0 2.827599415692196
+        translation 0 0.025999999999957658 0.020000000000000004
+        rotation -5.912530518735411e-17 1 -2.5867321019467425e-17 -2.4386836615795366
         children [
           DEF EPUCK_WHEEL Pose {
             rotation 1 0 0 -1.570796
@@ -200,7 +200,7 @@ DEF robot Robot {
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        position 127.10486543475503
+        position 140.07830671887595
         axis 0 1 0
         anchor 0 0 0.02
       }
@@ -216,8 +216,8 @@ DEF robot Robot {
         }
       ]
       endPoint DEF EPUCK_RIGHT_WHEEL Solid {
-        translation 0 -0.025999999999956013 0.02
-        rotation 0 1 0 1.4411592911632969
+        translation -6.938893903907228e-18 -0.025999999999918012 0.020000000000000004
+        rotation -6.955519202115596e-17 0.9999999999999999 1.5215198254627867e-17 1.8482299609250477
         children [
           Pose {
             rotation 1 0 0 3.14159
@@ -1102,7 +1102,7 @@ DEF robot Robot {
   controller "<extern>"
   supervisor TRUE
   battery [
-    9999951539.318073, 99938.94127643765, 2000
+    9999951534.084404, 99938.94127643765, 2000
   ]
   cpuConsumption 1.11
 }
@@ -1134,7 +1134,7 @@ DEF goal Solid {
   name "goal"
 }
 DEF start Solid {
-  translation 0.38 0.34 -0.049
+  translation 0.05 0.05 -0.049
   children [
     Shape {
       appearance Appearance {
@@ -1152,7 +1152,7 @@ DEF start Solid {
   name "start"
 }
 Solid {
-translation 0.5057760574945023 1.2887805250984363 0  children [
+translation 0.05 1 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
@@ -1161,7 +1161,7 @@ translation 0.5057760574945023 1.2887805250984363 0  children [
   ]
 }
 Solid {
-translation 0.25598475447026237 1.200226466327208 0  children [
+translation 0.15 1 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
@@ -1171,7 +1171,7 @@ translation 0.25598475447026237 1.200226466327208 0  children [
   name "solid(1)"
 }
 Solid {
-translation 0.2 1 0  children [
+translation 0.36852232446708505 0.8233588940831735 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
@@ -1181,7 +1181,7 @@ translation 0.2 1 0  children [
   name "solid(2)"
 }
 Solid {
-translation 0.7467467270368423 1.3890741010106402 0  children [
+translation 0.27735202615456456 1.398754042135673 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
@@ -1191,7 +1191,7 @@ translation 0.7467467270368423 1.3890741010106402 0  children [
   name "solid(3)"
 }
 Solid {
-translation 0.5347874847505023 1.0049176230666776 0  children [
+translation 0.16524128848136843 1.0137142545076492 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
@@ -1201,7 +1201,7 @@ translation 0.5347874847505023 1.0049176230666776 0  children [
   name "solid(4)"
 }
 Solid {
-translation 0.9407520390512717 0.7857706996002813 0  children [
+translation 1.4255915979731095 0.5417314210889682 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
@@ -1211,7 +1211,7 @@ translation 0.9407520390512717 0.7857706996002813 0  children [
   name "solid(5)"
 }
 Solid {
-translation 0.8334964930914188 0.5891057145920635 0  children [
+translation 0.18719775252137189 0.6235576932896201 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
@@ -1221,7 +1221,7 @@ translation 0.8334964930914188 0.5891057145920635 0  children [
   name "solid(6)"
 }
 Solid {
-translation 0.29913421399170714 0.9019393099742299 0  children [
+translation 0.6587655020672971 1.1899955841220549 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
@@ -1231,7 +1231,7 @@ translation 0.29913421399170714 0.9019393099742299 0  children [
   name "solid(7)"
 }
 Solid {
-translation 1.2936396999074136 1.4647617230373169 0  children [
+translation 1.4926800173384955 0.7873492840095973 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
@@ -1241,7 +1241,7 @@ translation 1.2936396999074136 1.4647617230373169 0  children [
   name "solid(8)"
 }
 Solid {
-translation 1.1674142053916001 1.3093869284723794 0  children [
+translation 1.7282433453536565 0.5388135527703517 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
@@ -1251,7 +1251,7 @@ translation 1.1674142053916001 1.3093869284723794 0  children [
   name "solid(9)"
 }
 Solid {
-translation 1.95 1 0  children [
+translation 1.7778581470074997 1.0623947582039834 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
@@ -1261,7 +1261,7 @@ translation 1.95 1 0  children [
   name "solid(10)"
 }
 Solid {
-translation 1.6326761773166212 1.0976499619033286 0  children [
+translation 1.5202217378644476 1.4615608483194662 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
@@ -1271,7 +1271,7 @@ translation 1.6326761773166212 1.0976499619033286 0  children [
   name "solid(11)"
 }
 Solid {
-translation 1.3395870964519898 0.5027088247993535 0  children [
+translation 1.2971333136173873 1.4525541620457378 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
@@ -1281,7 +1281,7 @@ translation 1.3395870964519898 0.5027088247993535 0  children [
   name "solid(12)"
 }
 Solid {
-translation 1.5260040281756964 0.5447584115320024 0  children [
+translation 1.686005807064372 1.0659371940035243 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
@@ -1291,7 +1291,7 @@ translation 1.5260040281756964 0.5447584115320024 0  children [
   name "solid(13)"
 }
 Solid {
-translation 1.5845126468634554 0.9799941019974104 0  children [
+translation 1.4445330653326467 1.253074690466402 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
@@ -1301,7 +1301,7 @@ translation 1.5845126468634554 0.9799941019974104 0  children [
   name "solid(14)"
 }
 Solid {
-translation 1.1844620484849544 0.7405812085219855 0  children [
+translation 1.8928824611187403 1.2898172250274054 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
@@ -1311,7 +1311,7 @@ translation 1.1844620484849544 0.7405812085219855 0  children [
   name "solid(15)"
 }
 Solid {
-translation 0.7663090539888088 0.7318460077759757 0  children [
+translation 1.4741066711625188 0.9702377124784913 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
@@ -1321,7 +1321,7 @@ translation 0.7663090539888088 0.7318460077759757 0  children [
   name "solid(16)"
 }
 Solid {
-translation 1.3757039030824754 0.9623489234923468 0  children [
+translation 1.5683360470625898 1.180279800610082 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1

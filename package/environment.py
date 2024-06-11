@@ -14,7 +14,7 @@ ROTATE_RIGHT = 2
 
 class Environment(gymnasium.Env):
     def __init__(self):
-        self.observation_space = spaces.Box(low=0, high=math.inf, shape=(100,), dtype=np.float32)
+        self.observation_space = spaces.Box(low=0, high=math.inf, shape=(20,), dtype=np.float32)
         self.action_space = spaces.Discrete(3)
         generate_map()
 
@@ -38,17 +38,19 @@ class Environment(gymnasium.Env):
         # self.camera.enable(self.timestep)
 
         self.time_start = 0
-        self.random_position = False
+
+        self.random_position = True
+        self.max_tries = 10
         self.counter = 0
 
         self.last_position = self.gps_info()
         self.last_distance = None
 
-        self.initial_position = (0, 0)
+        self.initial_position = (0.05, 0.05)
         self.goal_position = (1.50, 1.70)
         self.goal_distance = 0.1
 
-        self.min_safe_distance = 0.3
+        self.min_safe_distance = 0.5
         self.lose_distance = 0.1
 
         self.num_timesteps = 0
@@ -56,6 +58,9 @@ class Environment(gymnasium.Env):
         self.last_action = -1
 
         self.last_reward = 0
+
+        self.min_dist = 0.05
+        self.max_dist = 1.95
 
     def step(self, action):
         if self.last_action == -1:
@@ -65,10 +70,10 @@ class Environment(gymnasium.Env):
             cmd_vel(self.robot, 0.1, 0)
             self.robot.step(self.timestep)
         elif action == 1:
-            cmd_vel(self.robot, 0.1, 0.3)
+            cmd_vel(self.robot, 0.05, 0.5)
             self.robot.step(self.timestep)
         elif action == 2:
-            cmd_vel(self.robot, 0.1, -0.3)
+            cmd_vel(self.robot, 0.05, -0.5)
             self.robot.step(self.timestep)
 
         self.last_action = action
@@ -82,13 +87,14 @@ class Environment(gymnasium.Env):
         atual_reward = reward - self.last_reward
         self.last_reward = reward
         self.last_position = actual_location
+        # print(atual_reward)
         return np.array(lidar_data, dtype=np.float32), atual_reward, terminated, self.reached_goal(actual_location), {
             "gps_readings": actual_location, "time": time.time() - self.time_start}
 
     def get_obs(self):
         lidar_data = self.lidar.getRangeImage()
         lidar_data = np.array(lidar_data)
-        lidar_data = np.reshape(lidar_data, (100,))
+        #lidar_data = np.reshape(lidar_data, (20,))
         return lidar_data
 
     def gps_info(self):
@@ -98,10 +104,10 @@ class Environment(gymnasium.Env):
     def calculate_reward(self, gps_readings, lidar_data):
         '''
         if self.reached_goal(gps_readings):
-            return 10000, True
+            return 1000, True
 
         elif self.close_to_obstacle(lidar_data) or self.num_timesteps > self.max_timesteps:
-            return -10000, True
+            return -200, True
         else:
             # reward = 4 - self.calculate_distance(gps_readings)
             reward += self.calculate_direction_reward(gps_readings)
@@ -109,13 +115,12 @@ class Environment(gymnasium.Env):
                 if lidar_data[i] < self.min_safe_distance:
                     cont += 1
                 if math.isinf(lidar_data[i]):
-                    lidar_data[i] = 10000
-            reward += -0.1 * cont
+                    lidar_data[i] = 3
+            reward += -0.5 * cont
             reward = round(reward, 2)
             return reward, False
         '''
 
-        cont = 0
         done = False
         distance = self.calculate_distance(gps_readings)
         normalized_distance = distance / 2
@@ -142,7 +147,7 @@ class Environment(gymnasium.Env):
 
         for i in range(len(lidar_data)):
             if math.isinf(lidar_data[i]):
-                lidar_data[i] = 10000
+                lidar_data[i] = 3
 
         if self.reached_goal(gps_readings):
             reward += 25
@@ -154,7 +159,6 @@ class Environment(gymnasium.Env):
             reward -= 0.001
 
         return reward, done
-
 
     def calculate_distance(self, gps_readings):
         return round(
@@ -172,9 +176,10 @@ class Environment(gymnasium.Env):
         if new_distance < self.last_distance:
             return 1
         else:
-            return 0
+            return -1
 
-    def point_on_line_closest_to_goal(self, line_point1=None, line_point2=None, given_point=None, m=None, b=None):
+    @staticmethod
+    def point_on_line_closest_to_goal(line_point1=None, line_point2=None, given_point=None, m=None, b=None):
 
         # Calculate the equation of the line (y = mx + b)
         if m is None:
@@ -215,10 +220,12 @@ class Environment(gymnasium.Env):
 
         # After TIMEOUT, randomize the initial and final positions
         if self.random_position:
-            if self.counter >= 5:
+            if self.counter >= self.max_tries:
                 self.counter = 0
-                self.initial_position = (np.random.uniform(0.2, 1.8), np.random.uniform(0.2, 1.8))
-                self.goal_position = (np.random.uniform(0.2, 1.8), np.random.uniform(0.2, 1.8))
+                self.initial_position = (
+                np.random.uniform(self.min_dist, self.max_dist), np.random.uniform(self.min_dist, self.max_dist))
+                self.goal_position = (
+                np.random.uniform(self.min_dist, self.max_dist), np.random.uniform(self.min_dist, self.max_dist))
             self.translation_node.setSFVec3f([self.initial_position[0], self.initial_position[1], 0.0])
             self.goal_node.getField("translation").setSFVec3f([self.goal_position[0], self.goal_position[1], -0.049])
             self.start_node.getField("translation").setSFVec3f(
