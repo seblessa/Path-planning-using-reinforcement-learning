@@ -1,15 +1,4 @@
 from package import testing, training
-import platform
-import sys
-
-if platform.system() == "Darwin":
-    webots_path = "/Applications/Webots.app/Contents/lib/controller/python"
-    print("macOS")
-else:  # Windows
-    #webots_path = "C:\Program Files\Webots\lib\controller\python"
-    print("Windows")
-
-sys.path.append(webots_path)
 
 
 def choose_model():
@@ -21,7 +10,7 @@ def choose_model():
     print("5. ARS")
     print("6. TRPO")
 
-    choice = input("Enter the algorithm name: ")
+    choice = input("Enter the algorithm number: ")
     if choice == "1":
         return "PPO"
     elif choice == "2":
