@@ -1,8 +1,5 @@
-*.wbproj
 .vscode/*
 .idea/*
 logs
+!models/**/final.zip
 /models/
-/worlds/.door.jpg
-/worlds/.circle.jpg
-
