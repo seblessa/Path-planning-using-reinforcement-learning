@@ -3,9 +3,8 @@ from gymnasium import spaces
 import math
 import time
 import numpy as np
-from .map_script import generate_map
-from controller import Robot, Lidar, GPS, Supervisor
-from package import cmd_vel, move_forward, rotate
+from controller import Lidar, Supervisor
+from package import cmd_vel
 
 MOVE_FORWARD = 0
 ROTATE_LEFT = 1
@@ -13,10 +12,9 @@ ROTATE_RIGHT = 2
 
 
 class Environment(gymnasium.Env):
-    def __init__(self):
+    def __init__(self, max_tries_before_change=10):
         self.observation_space = spaces.Box(low=0, high=math.inf, shape=(20,), dtype=np.float32)
         self.action_space = spaces.Discrete(3)
-        generate_map()
 
         self.robot: Supervisor = Supervisor()
         self.robot_node = self.robot.getFromDef("robot")
@@ -43,7 +41,7 @@ class Environment(gymnasium.Env):
         self.time_start = 0
 
         self.random_position = True
-        self.max_tries = 10
+        self.max_tries_before_change = max_tries_before_change
         self.counter = 0
 
         self.last_position = self.gps_info()
@@ -110,22 +108,22 @@ class Environment(gymnasium.Env):
 
         if normalized_distance < 42:
             if normalized_distance < 5:
-                growth_factor = 8
-                A = 4
+                rate = 8
+                multiplier = 4
             elif normalized_distance < 10:
-                growth_factor = 5
-                A = 2.5
+                rate = 5
+                multiplier = 2.5
             elif normalized_distance < 25:
-                growth_factor = 4
-                A = 1.5
+                rate = 4
+                multiplier = 1.5
             elif normalized_distance < 37:
-                growth_factor = 2.5
-                A = 1.2
+                rate = 2.5
+                multiplier = 1.2
             else:
-                growth_factor = 1.2
-                A = 0.9
+                rate = 1.2
+                multiplier = 0.9
 
-            return A * (1 - np.exp(-growth_factor * (1 / normalized_distance)))
+            return multiplier * (1 - np.exp(-rate * (1 / normalized_distance)))
 
         else:
             return -normalized_distance / 100
@@ -141,7 +139,7 @@ class Environment(gymnasium.Env):
         reward = self.distance_reward(distance)
         # print(f"DISTANCE REWARD: {reward}")
 
-        direction_reward = self.direction_reward(gps_readings,self.compass.getValues())
+        direction_reward = self.direction_reward(gps_readings, self.compass.getValues())
         reward += direction_reward
         # print(f"DIRECTION REWARD: {direction_reward}\n")
 
@@ -161,7 +159,6 @@ class Environment(gymnasium.Env):
         # print(f"REWARD: {reward}\n\n")
         return reward, done
 
-
     def direction_reward(self, current_position, compass_vector):
         # Calculate the goal vector from current_position to goal_position
         goal_vector_x = self.goal_position[0] - current_position[0]
@@ -177,7 +174,6 @@ class Environment(gymnasium.Env):
         angle_diff = goal_angle - current_angle
 
         return math.cos(angle_diff)
-
 
     def reached_goal(self, actual_location):
         if abs(actual_location[0] - self.goal_position[0]) < self.goal_distance and abs(
@@ -197,12 +193,12 @@ class Environment(gymnasium.Env):
 
         # After TIMEOUT, randomize the initial and final positions
         if self.random_position:
-            if self.counter >= self.max_tries:
+            if self.counter >= self.max_tries_before_change:
                 self.counter = 0
                 self.initial_position = (
-                np.random.uniform(self.min_dist, self.max_dist), np.random.uniform(self.min_dist, self.max_dist))
+                    np.random.uniform(self.min_dist, self.max_dist), np.random.uniform(self.min_dist, self.max_dist))
                 self.goal_position = (
-                np.random.uniform(self.min_dist, self.max_dist), np.random.uniform(self.min_dist, self.max_dist))
+                    np.random.uniform(self.min_dist, self.max_dist), np.random.uniform(self.min_dist, self.max_dist))
             self.translation_node.setSFVec3f([self.initial_position[0], self.initial_position[1], 0.0])
             self.goal_node.getField("translation").setSFVec3f([self.goal_position[0], self.goal_position[1], -0.049])
             self.start_node.getField("translation").setSFVec3f(

@@ -1,31 +1,4 @@
-from package import testing, training
-
-
-def choose_model():
-    print("Please select an algorithm to train:")
-    print("1. PPO")
-    print("2. A2C")
-    print("3. DQN")
-    print("4. QRDQN")
-    print("5. ARS")
-    print("6. TRPO")
-
-    choice = input("Enter the algorithm number: ")
-    if choice == "1":
-        return "PPO"
-    elif choice == "2":
-        return "A2C"
-    elif choice == "3":
-        return "DQN"
-    elif choice == "4":
-        return "QRDQN"
-    elif choice == "5":
-        return "ARS"
-    elif choice == "6":
-        return "TRPO"
-    else:
-        print("\nNo model selected.\n\n\n")
-        return choose_model()
+from package import testing, training, choose_model
 
 
 def main():

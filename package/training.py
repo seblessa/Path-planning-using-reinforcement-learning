@@ -44,24 +44,8 @@ def train_model(algo, algo_name):
 
 
 def main(algo_name=None):
-    if algo_name == "PPO":
-        print("Training PPO")
-        train_model(PPO, algo_name)
-    elif algo_name == "A2C":
-        print("Training A2C")
-        train_model(A2C, algo_name)
-    elif algo_name == "DQN":
-        print("Training DQN")
-        train_model(DQN, algo_name)
-    elif algo_name == "QRDQN":
-        print("Training QRDQN")
-        train_model(QRDQN, algo_name)
-    elif algo_name == "ARS":
-        print("Training ARS")
-        train_model(ARS, algo_name)
-    elif algo_name == "TRPO":
-        print("Training TRPO")
-        train_model(TRPO, algo_name)
+    if algo_name in ["PPO", "A2C", "DQN", "QRDQN", "ARS", "TROPO"]:
+        print(f"Training {algo_name}")
+        train_model(eval(algo_name), algo_name)
     else:
-        print("\nNo model selected.\n\n\n")
-        main(algo_name)
+        print("\nNo valid model selected. Please select a valid model name.\n\n")

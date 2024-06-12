@@ -2,8 +2,8 @@ import os
 import random
 
 
-def generate_map(threshold=0.5):
-    input_file = "worlds/door.wbt"
+def generate_map(threshold=0.2):
+    input_file = "worlds/four_doors.wbt"
     output_file = "worlds/generated_map.wbt"
 
     with open(input_file, 'r') as f:

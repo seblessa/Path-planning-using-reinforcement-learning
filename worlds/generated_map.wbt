@@ -13,7 +13,7 @@ WorldInfo {
 }
 Viewpoint {
   orientation 0.4985767839545283 -0.5291551931768875 -0.6865973871458372 4.284414639045184
-  position 1.384100948046614 -0.560199230717796 5.691180198397347
+  position 1.4362390820307047 -0.5894979137438966 5.680139125467956
 }
 TexturedBackground {
 }
@@ -1152,16 +1152,7 @@ DEF start Solid {
   name "start"
 }
 Solid {
-translation 0.5175025143127736 0.7489058066603805 0  children [
-    Shape {
-      geometry Box {
-        size 0.1 0.1 0.1
-      }
-    }
-  ]
-}
-Solid {
-translation 0.46716809284782657 0.8252575113797866 0  children [
+translation 0.7189975963606945 1.4429155264704046 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
@@ -1171,57 +1162,7 @@ translation 0.46716809284782657 0.8252575113797866 0  children [
   name "solid(1)"
 }
 Solid {
-translation 0.16605518362099864 1.3121592173103496 0  children [
-    Shape {
-      geometry Box {
-        size 0.1 0.1 0.1
-      }
-    }
-  ]
-  name "solid(2)"
-}
-Solid {
-translation 0.035686433622567404 1.3667666314025124 0  children [
-    Shape {
-      geometry Box {
-        size 0.1 0.1 0.1
-      }
-    }
-  ]
-  name "solid(3)"
-}
-Solid {
-translation 0.6438033016258784 0.8045153095588737 0  children [
-    Shape {
-      geometry Box {
-        size 0.1 0.1 0.1
-      }
-    }
-  ]
-  name "solid(4)"
-}
-Solid {
-translation 0.9767612301484458 0.6734339194158288 0  children [
-    Shape {
-      geometry Box {
-        size 0.1 0.1 0.1
-      }
-    }
-  ]
-  name "solid(5)"
-}
-Solid {
-translation 0.23472139715373247 1.4521765015432542 0  children [
-    Shape {
-      geometry Box {
-        size 0.1 0.1 0.1
-      }
-    }
-  ]
-  name "solid(6)"
-}
-Solid {
-translation 0.7054837775377513 1.4939863557009674 0  children [
+translation 0.5614386316618334 1.4954899417438914 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
@@ -1231,17 +1172,87 @@ translation 0.7054837775377513 1.4939863557009674 0  children [
   name "solid(7)"
 }
 Solid {
-translation 0.9914474687795145 1.2954875553148335 0  children [
+translation 0.6613364907160566 1.5361110410630778 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
       }
     }
   ]
-  name "solid(8)"
+  name "solid(31)"
 }
 Solid {
-translation 1.187719416866809 1.2853133038234974 0  children [
+translation 0.6631904052494974 1.5824733194779814 0  children [
+    Shape {
+      geometry Box {
+        size 0.1 0.1 0.1
+      }
+    }
+  ]
+  name "solid(32)"
+}
+Solid {
+translation 1.1927870994307777 1.4806532804949197 0  children [
+    Shape {
+      geometry Box {
+        size 0.1 0.1 0.1
+      }
+    }
+  ]
+  name "solid(36)"
+}
+Solid {
+translation 1.2432631494488338 1.5439772242115848 0  children [
+    Shape {
+      geometry Box {
+        size 0.1 0.1 0.1
+      }
+    }
+  ]
+  name "solid(37)"
+}
+Solid {
+translation 1.2033398895795853 1.396735009646746 0  children [
+    Shape {
+      geometry Box {
+        size 0.1 0.1 0.1
+      }
+    }
+  ]
+  name "solid(38)"
+}
+Solid {
+translation 0.4258183190400064 1.451954758523343 0  children [
+    Shape {
+      geometry Box {
+        size 0.1 0.1 0.1
+      }
+    }
+  ]
+  name "solid(2)"
+}
+Solid {
+translation 0.7074374811279185 1.345703317470302 0  children [
+    Shape {
+      geometry Box {
+        size 0.1 0.1 0.1
+      }
+    }
+  ]
+  name "solid(3)"
+}
+Solid {
+translation 0.6525227559696676 1.136611471515481 0  children [
+    Shape {
+      geometry Box {
+        size 0.1 0.1 0.1
+      }
+    }
+  ]
+  name "solid(4)"
+}
+Solid {
+translation 0.6854266712468606 0.7148239442883653 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
@@ -1251,7 +1262,7 @@ translation 1.187719416866809 1.2853133038234974 0  children [
   name "solid(9)"
 }
 Solid {
-translation 1.95 1 0  children [
+translation 0.705855462833922 0.7416420662057275 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
@@ -1261,7 +1272,7 @@ translation 1.95 1 0  children [
   name "solid(10)"
 }
 Solid {
-translation 1.85 1 0  children [
+translation 0.6443068555091993 0.2720180748233598 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
@@ -1271,7 +1282,7 @@ translation 1.85 1 0  children [
   name "solid(11)"
 }
 Solid {
-translation 1.2584457242937568 1.236027188496919 0  children [
+translation 0.540133603725869 0.2968136089787603 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
@@ -1281,7 +1292,7 @@ translation 1.2584457242937568 1.236027188496919 0  children [
   name "solid(12)"
 }
 Solid {
-translation 1.8113216387174313 0.7675333338730441 0  children [
+translation 0.6576229930311978 0.5034464232683744 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
@@ -1291,7 +1302,7 @@ translation 1.8113216387174313 0.7675333338730441 0  children [
   name "solid(13)"
 }
 Solid {
-translation 1.957569951725606 0.7588723072514364 0  children [
+translation 0.9556964058133859 0.46929628537239404 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
@@ -1301,32 +1312,102 @@ translation 1.957569951725606 0.7588723072514364 0  children [
   name "solid(14)"
 }
 Solid {
-translation 1.6956761234816682 1.042083375614863 0  children [
+translation 1.0889269555802112 0.47675818332718384 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
       }
     }
   ]
-  name "solid(15)"
+  name "solid(18)"
 }
 Solid {
-translation 1.3665495969173458 0.6828257262187879 0  children [
+translation 1.192083247496582 0.35789834083929434 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
       }
     }
   ]
-  name "solid(16)"
+  name "solid(19)"
 }
 Solid {
-translation 0.7938879678936673 1.3133125771122227 0  children [
+translation 1.2183237772968243 0.5733019961854421 0  children [
     Shape {
       geometry Box {
         size 0.1 0.1 0.1
       }
     }
   ]
-  name "solid(17)"
+  name "solid(20)"
+}
+Solid {
+translation 1.5911154155107594 0.5535285095981108 0  children [
+    Shape {
+      geometry Box {
+        size 0.1 0.1 0.1
+      }
+    }
+  ]
+  name "solid(21)"
+}
+Solid {
+translation 1.3990189643102418 0.49078024142120236 0  children [
+    Shape {
+      geometry Box {
+        size 0.1 0.1 0.1
+      }
+    }
+  ]
+  name "solid(22)"
+}
+Solid {
+translation 1.3958099900759753 0.6636422935332034 0  children [
+    Shape {
+      geometry Box {
+        size 0.1 0.1 0.1
+      }
+    }
+  ]
+  name "solid(23)"
+}
+Solid {
+translation 1.5084915748483176 1.1761543106553596 0  children [
+    Shape {
+      geometry Box {
+        size 0.1 0.1 0.1
+      }
+    }
+  ]
+  name "solid(27)"
+}
+Solid {
+translation 1.4470294000878747 1.2603698080174504 0  children [
+    Shape {
+      geometry Box {
+        size 0.1 0.1 0.1
+      }
+    }
+  ]
+  name "solid(28)"
+}
+Solid {
+translation 1.5573078648935392 1.4466338292563257 0  children [
+    Shape {
+      geometry Box {
+        size 0.1 0.1 0.1
+      }
+    }
+  ]
+  name "solid(29)"
+}
+Solid {
+translation 1.5870587062984933 1.2360102685060994 0  children [
+    Shape {
+      geometry Box {
+        size 0.1 0.1 0.1
+      }
+    }
+  ]
+  name "solid(30)"
 }
