@@ -22,13 +22,15 @@ def test_model(algorithm, algo_name):
     list_position = list(position)
 
     for ep in range(episodes):
+        print(f"Episode {ep + 1}.")
         obs, _ = env.reset()
         done = False
         while not done:
             action, _states = model.predict(obs)
             obs, reward, done, win, info = env.step(action.item())
+            # print(info["gps_readings"][0])
             if done:
-                print("Episode finished")
+                print(f"Episode {ep + 1} finished.")
             if win:
                 num_wins += 1
                 total_time += info["time"]
