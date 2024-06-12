@@ -14,7 +14,7 @@ def test_model(algorithm, algo_name):
     model = algorithm.load(model_path, env=env)
 
     num_wins = 0
-    episodes = 1
+    episodes = 5
     goal_position = env.goal_position
     width_object = env.goal_distance * 2
     total_time = 0
@@ -27,7 +27,6 @@ def test_model(algorithm, algo_name):
         while not done:
             action, _states = model.predict(obs)
             obs, reward, done, win, info = env.step(action.item())
-            print(info["gps_readings"][0])
             if done:
                 print("Episode finished")
             if win:
@@ -40,7 +39,7 @@ def test_model(algorithm, algo_name):
                 print("Goal Reached")
 
     metrics_info = {"num_episodes": episodes, "num_successful_trials": num_wins, "time_to_reach_goal": total_time,
-                    "distance_to_goal": position,
+                    "final_position": position,
                     "goal_position": goal_position,
                     "width_object": width_object}
 
