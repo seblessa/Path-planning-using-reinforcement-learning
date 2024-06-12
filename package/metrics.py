@@ -6,14 +6,16 @@ def success_rate(num_episodes, num_successful_trials):
 
 
 def time_to_reach_goal(num_episodes, total_time):
-    return total_time / num_episodes
+    return round(total_time / num_episodes, 2)
 
 
-def distance_to_goal(gps_readings, goal_position):
+def distance_to_goal(num_episodes, gps_readings, goal_position):
     if gps_readings == (0, 0):
         return 0
-    goal_distance = math.sqrt((gps_readings[0] - goal_position[0]) ** 2 + (gps_readings[1] - goal_position[1]) ** 2)
-    return abs(goal_distance)
+    mean_readings_x = gps_readings[0] / num_episodes
+    mean_readings_y = gps_readings[1] / num_episodes
+    goal_distance = math.sqrt((mean_readings_x - goal_position[0]) ** 2 + (mean_readings_y - goal_position[1]) ** 2)
+    return abs(round(goal_distance, 2))
 
 
 def print_metrics(info):
@@ -26,7 +28,7 @@ def print_metrics(info):
 
     successrate = success_rate(num_episodes, num_successful_trials)
     time = time_to_reach_goal(num_episodes, time)
-    distance = distance_to_goal(final_position, goal_position)
+    distance = distance_to_goal(num_episodes,final_position, goal_position)
 
     if successrate == 0:
         print("\nThe robot was not able to reach the goal\n")
